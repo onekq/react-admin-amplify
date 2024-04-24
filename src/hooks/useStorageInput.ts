@@ -1,4 +1,4 @@
-import { Storage } from "aws-amplify";
+import { uploadData } from "@aws-amplify/storage";
 import { useEffect } from "react";
 import { useInput } from "react-admin";
 import { v4 as uuid } from "uuid";
@@ -35,10 +35,11 @@ export function useStorageInput({
     try {
       const values = await Promise.all(
         files.map(async (file) => {
-          const result = (await Storage.put(
-            `${uuid().replace(/-/g, "")}_${file.name}`,
-            file,
-            storageOptions
+          const result = (await uploadData({
+            key: `${uuid().replace(/-/g, "")}_${file.name}`,
+            data: file,
+            options: storageOptions
+          }
           )) as any;
 
           return {

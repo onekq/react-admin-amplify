@@ -1,4 +1,3 @@
-import { GRAPHQL_AUTH_MODE } from "@aws-amplify/api";
 import React from "react";
 import { Admin, AdminProps } from "react-admin";
 import { buildAuthProvider, buildDataProvider } from "../providers";
@@ -6,7 +5,6 @@ import { Operations } from "../providers/DataProvider";
 
 export interface AmplifyAdminOptions {
   authGroups?: string[];
-  authMode?: GRAPHQL_AUTH_MODE;
   storageBucket?: string;
   storageRegion?: string;
   enableAdminQueries?: boolean;
@@ -25,7 +23,6 @@ export const AmplifyAdmin: React.FC<Props> = ({
 }) => {
   const {
     authGroups,
-    authMode,
     storageBucket,
     storageRegion,
     enableAdminQueries,
@@ -36,7 +33,6 @@ export const AmplifyAdmin: React.FC<Props> = ({
       {...propsRest}
       authProvider={buildAuthProvider({ authGroups })}
       dataProvider={buildDataProvider(operations, {
-        authMode,
         storageBucket,
         storageRegion,
         enableAdminQueries,

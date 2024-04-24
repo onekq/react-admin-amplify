@@ -1,4 +1,4 @@
-import { Storage } from "aws-amplify";
+import { getUrl } from "@aws-amplify/storage";
 import { useEffect, useState } from "react";
 import { useRecordContext } from "react-admin";
 
@@ -36,7 +36,7 @@ export function useStorageField({
             return;
           }
 
-          const url = await Storage.get(value.key, storageOptions);
+          const url = await getUrl({key: value.key, options: storageOptions});
 
           if (typeof url !== "string") {
             return;
@@ -68,7 +68,7 @@ export function useStorageField({
     }
 
     // Default case when rendering a single file
-    Storage.get(record[source].key, storageOptions).then((url: any) => {
+    getUrl({key: record[source].key, options: storageOptions}).then((url: any) => {
       if (typeof url !== "string") {
         return;
       }
@@ -91,7 +91,7 @@ export function useStorageField({
       return;
     }
 
-    Storage.get(file.key, storageOptions).then((url: any) => {
+    getUrl({key: file.key, options: storageOptions}).then((url: any) => {
       if (typeof url !== "string") {
         return;
       }

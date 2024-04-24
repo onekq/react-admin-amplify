@@ -1,4 +1,4 @@
-import { API, GraphQLResult, GRAPHQL_AUTH_MODE } from "@aws-amplify/api";
+import { generateClient, GraphQLResult } from "@aws-amplify/api";
 import {
   CreateParams,
   CreateResult,
@@ -20,7 +20,6 @@ import {
   UpdateParams,
   UpdateResult,
 } from "ra-core";
-import { AdminQueries } from "./AdminQueries";
 import { Filter } from "./Filter";
 import { Pagination } from "./Pagination";
 
@@ -30,14 +29,12 @@ export interface Operations {
 }
 
 export interface DataProviderOptions {
-  authMode?: GRAPHQL_AUTH_MODE;
   storageBucket?: string;
   storageRegion?: string;
   enableAdminQueries?: boolean;
 }
 
 const defaultOptions = {
-  authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
   enableAdminQueries: false,
 };
 
@@ -45,7 +42,6 @@ export class DataProvider {
   public queries: Record<string, string>;
   public mutations: Record<string, string>;
 
-  public authMode: GRAPHQL_AUTH_MODE;
   public enableAdminQueries: boolean;
 
   static storageBucket?: string;
@@ -55,7 +51,6 @@ export class DataProvider {
     this.queries = operations.queries;
     this.mutations = operations.mutations;
 
-    this.authMode = options?.authMode || defaultOptions.authMode;
     this.enableAdminQueries =
       options?.enableAdminQueries || defaultOptions.enableAdminQueries;
 
@@ -67,14 +62,6 @@ export class DataProvider {
     resource: string,
     params: GetListParams
   ): Promise<GetListResult> => {
-    if (this.enableAdminQueries && resource === "cognitoUsers") {
-      return AdminQueries.listCognitoUsers(params);
-    }
-
-    if (this.enableAdminQueries && resource === "cognitoGroups") {
-      return AdminQueries.listCognitoGroups(params);
-    }
-
     const { filter } = params;
 
     let queryName = Filter.getQueryName(this.queries, filter);
@@ -143,10 +130,6 @@ export class DataProvider {
     resource: string,
     params: GetOneParams
   ): Promise<GetOneResult> => {
-    if (this.enableAdminQueries && resource === "cognitoUsers") {
-      return AdminQueries.getCognitoUser(params);
-    }
-
     const queryName = this.getQueryName("get", resource);
     const query = this.getQuery(queryName);
 
@@ -166,10 +149,6 @@ export class DataProvider {
     resource: string,
     params: GetManyParams
   ): Promise<GetManyResult> => {
-    if (this.enableAdminQueries && resource === "cognitoUsers") {
-      return AdminQueries.getManyCognitoUsers(params);
-    }
-
     const queryName = this.getQueryName("get", resource);
     const query = this.getQuery(queryName);
 
@@ -376,10 +355,9 @@ export class DataProvider {
     query: string,
     variables: Record<string, unknown>
   ): Promise<any> {
-    const queryResult = <GraphQLResult>await API.graphql({
+    const queryResult = <GraphQLResult>await generateClient().graphql({
       query,
       variables,
-      authMode: this.authMode,
     });
 
     if (queryResult.errors || !queryResult.data) {
