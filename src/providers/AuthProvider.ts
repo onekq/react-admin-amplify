@@ -1,4 +1,4 @@
-import { signIn, signOut, fetchAuthSession, decodeJWT } from "@aws-amplify/auth";
+import { signIn, signOut, signUp, fetchAuthSession, decodeJWT } from "@aws-amplify/auth";
 
 export interface AuthProviderOptions {
   authGroups?: string[];
@@ -14,6 +14,16 @@ export class AuthProvider {
   public constructor(options?: AuthProviderOptions) {
     this.authGroups = options?.authGroups || defaultOptions.authGroups;
   }
+
+  public signup = async ({
+    username,
+    password
+  }: {
+    username: string;
+    password: string;
+  }): Promise<unknown> => {
+    return signUp({username, password});
+  };
 
   public login = async ({
     username,
