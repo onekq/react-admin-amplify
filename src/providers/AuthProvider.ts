@@ -37,8 +37,7 @@ export class AuthProvider {
     }
 
     const token = session.tokens.idToken.toString();
-    const payload = jwt.decode(token) as { [key: string]: any };
-    const userGroups = payload['cognito:groups'];  
+    const userGroups = decodeJWT(token)['cognito:groups'];  
 
     if (!userGroups) {
       throw new Error("Unauthorized");
