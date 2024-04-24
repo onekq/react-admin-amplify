@@ -61,7 +61,6 @@
   },
   "dependencies": {
     "@aws-amplify/auth": "^6.0.29",
-    "jsonwebtoken": "^9.0.2",
     "uuid": "^8.3.2"
   }
 }
