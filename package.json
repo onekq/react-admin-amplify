@@ -1,10 +1,10 @@
 {
   "name": "react-admin-amplify",
-  "version": "2.0.1",
+  "version": "2.0.3",
   "description": "AWS Amplify data provider for react-admin.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MrHertal/react-admin-amplify"
+    "url": "https://github.com/onekq/react-admin-amplify"
   },
   "main": "build/index.js",
   "module": "build/index.es.js",
