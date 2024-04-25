@@ -227,15 +227,12 @@ export class DataProvider {
     delete data.updatedAt;
     delete data.__typename;
 
+    // Remove composite fields that contain a '__typename' key
     Object.keys(data).forEach(key => {
       const value = data[key];
-      if (value && typeof value === 'object') {
-        const targetKeys = ['nextToken', '__typename'];
-        const objKeys = Object.keys(value);
-        console.log("object: ", key, objKeys);
-        if (objKeys.length === targetKeys.length && targetKeys.every(key => objKeys.includes(key))) {
-          delete data[key];
-        }
+      // Check if value is an object and if it has the '__typename' key
+      if (value && typeof value === 'object' && '__typename' in Object.keys(value)) {
+        delete data[key];
       }
     });
   
