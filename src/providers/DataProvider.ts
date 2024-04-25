@@ -231,7 +231,7 @@ export class DataProvider {
     Object.keys(data).forEach(key => {
       const value = data[key];
       // Check if value is an object and if it has the '__typename' key
-      if (value && typeof value === 'object' && '__typename' in Object.keys(value)) {
+      if (value && typeof value === 'object' && '__typename' in value) {
         delete data[key];
       }
     });
