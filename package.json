@@ -1,6 +1,6 @@
 {
   "name": "react-admin-amplify-6",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A fork of react-admin-amplify to make it work on Amplify 6.",
   "repository": {
     "type": "git",

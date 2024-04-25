@@ -202,6 +202,7 @@ export class DataProvider {
     const query = this.getQuery(queryName);
 
     // Executes the query
+    console.log("Creating with data:", params.data);
     const queryData = (await this.graphql(query, { input: params.data }))[
       queryName
     ];
@@ -224,6 +225,7 @@ export class DataProvider {
     delete data._lastChangedAt;
     delete data.createdAt;
     delete data.updatedAt;
+    delete data.__typename;
 
     // Executes the query
     console.log("Updating with data:", data);
