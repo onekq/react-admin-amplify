@@ -228,9 +228,15 @@ export class DataProvider {
 
     Object.keys(data).forEach(key => {
       const value = data[key];
+      console.log("key: ", key);
+      console.log("type: ", typeof value);
       // Check if value is an object and has 'nextToken' and '__typename' property
-      if (typeof value === 'object' && value.nextToken && value.__typename) {
-        delete data[key];
+      if (typeof value === 'object') {
+        console.log("nextToken: ", value.nextToken);
+        console.log("__typename: ", value.__typename);
+        if (value.nextToken && value.__typename) {
+          delete data[key];
+        }
       }
     });
   
