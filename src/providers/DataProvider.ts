@@ -202,7 +202,6 @@ export class DataProvider {
     const query = this.getQuery(queryName);
 
     // Executes the query
-    console.log("Creating with data:", params.data);
     const queryData = (await this.graphql(query, { input: params.data }))[
       queryName
     ];
@@ -227,6 +226,14 @@ export class DataProvider {
     delete data.updatedAt;
     delete data.__typename;
 
+    Object.keys(data).forEach(key => {
+      const value = data[key];
+      // Check if value is an object and has 'nextToken' and '__typename' property
+      if (typeof value === 'object' && value.nextToken && value.__typename) {
+        delete data[key];
+      }
+    });
+  
     // Executes the query
     console.log("Updating with data:", data);
     const queryData = (await this.graphql(query, { input: data }))[queryName];
@@ -235,7 +242,7 @@ export class DataProvider {
       data: queryData,
     };
   };
-
+  
   // This may not work for API that uses DataStore because
   // DataStore works with a _version field that needs to be properly set
   public updateMany = async (
