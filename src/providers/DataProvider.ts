@@ -206,6 +206,7 @@ export class DataProvider {
       queryName
     ];
 
+    console.log("Creating with data:", params.data);
     return {
       data: queryData,
     };
@@ -228,13 +229,11 @@ export class DataProvider {
 
     Object.keys(data).forEach(key => {
       const value = data[key];
-      console.log("key: ", key);
-      console.log("type: ", typeof value);
-      // Check if value is an object and has 'nextToken' and '__typename' property
-      if (typeof value === 'object') {
-        console.log("nextToken: ", value.nextToken);
-        console.log("__typename: ", value.__typename);
-        if (value.nextToken && value.__typename) {
+      if (value && typeof value === 'object') {
+        const targetKeys = ['nextToken', '__typename'];
+        const objKeys = Object.keys(value);
+        console.log("object: ", key, objKeys);
+        if (objKeys.length === targetKeys.length && targetKeys.every(key => objKeys.includes(key))) {
           delete data[key];
         }
       }
