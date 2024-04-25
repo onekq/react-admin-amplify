@@ -226,6 +226,7 @@ export class DataProvider {
     delete data.updatedAt;
 
     // Executes the query
+    console.log("Updating with data:", data);
     const queryData = (await this.graphql(query, { input: data }))[queryName];
 
     return {
