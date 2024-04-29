@@ -20,7 +20,6 @@ import {
   UpdateParams,
   UpdateResult,
 } from "ra-core";
-import { Filter } from "./Filter";
 import { Pagination } from "./Pagination";
 
 export interface Operations {
