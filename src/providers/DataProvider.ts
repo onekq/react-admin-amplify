@@ -63,7 +63,7 @@ export class DataProvider {
   ): Promise<GetListResult> => {
     const { filter } = params;
 
-    const queryVariables = filter ? { 'filter' : filter} : {};
+    const queryVariables = filter ? { filter } : null;
     const queryName = this.getQueryName("list", resource);
   
     const query = this.getQuery(queryName);
