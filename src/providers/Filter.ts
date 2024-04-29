@@ -28,7 +28,7 @@ export class Filter {
       return null;
     }
 
-    const queryParams = filter[0] as Record<string, unknown>;
+    const queryParams = Object.values(filter)[0] as Record<string, unknown>;
 
     for (const bannedKeyName of bannedKeyNames) {
       delete queryParams[bannedKeyName];

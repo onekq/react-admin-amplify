@@ -64,14 +64,10 @@ export class DataProvider {
   ): Promise<GetListResult> => {
     const { filter } = params;
 
-    let queryVariables = Filter.getQueryVariables(filter);
+    const queryVariables = filter ? { filter : params[filter]} : {};
     const queryName = this.getQueryName("list", resource);
   
     const query = this.getQuery(queryName);
-
-    if (!queryVariables) {
-      queryVariables = {};
-    }
 
     const { page, perPage } = params.pagination;
 
