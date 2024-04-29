@@ -20,6 +20,7 @@ import {
   UpdateParams,
   UpdateResult,
 } from "ra-core";
+import { Filter } from "./Filter";
 import { Pagination } from "./Pagination";
 
 export interface Operations {
@@ -63,10 +64,19 @@ export class DataProvider {
   ): Promise<GetListResult> => {
     const { filter } = params;
 
-    const queryVariables = Object.keys(filter).length > 0 ? { filter } : {};
-    const queryName = this.getQueryName("list", resource);
-  
+    let queryName = Filter.getQueryName(this.queries, filter);
+    let queryVariables = Filter.getQueryVariables(filter);
+
+    if (!queryName || !queryVariables) {
+      // Default list query without filter
+      queryName = this.getQueryName("list", resource);
+    }
+
     const query = this.getQuery(queryName);
+
+    if (!queryVariables) {
+      queryVariables = {};
+    }
 
     const { page, perPage } = params.pagination;
 
