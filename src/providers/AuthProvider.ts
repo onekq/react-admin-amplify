@@ -46,6 +46,10 @@ export class AuthProvider {
       return;
     }
 
+    if (!session || !session.tokens || !session.tokens.idToken) {
+      throw new Error("Unauthorized");
+    }
+
     const token = session.tokens.idToken.toString();
     const userGroups = decodeJWT(token)['cognito:groups'];  
 
