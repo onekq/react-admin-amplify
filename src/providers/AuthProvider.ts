@@ -1,4 +1,5 @@
 import { signIn, signOut, signUp, fetchAuthSession, decodeJWT } from "@aws-amplify/auth";
+type JsonArray = any[];
 
 export interface AuthProviderOptions {
   authGroups?: string[];
@@ -52,13 +53,13 @@ export class AuthProvider {
 
     const token = session.tokens.idToken.toString();
     const decodedToken = decodeJWT(token);
-    const userGroups = decodedToken['cognito:groups'];  
+    const userGroups = decodedToken.payload['cognito:groups'];  
 
     if (!userGroups) {
       throw new Error("Unauthorized");
     }
 
-    for (const group of userGroups) {
+    for (const group of userGroups as JsonArray) {
       if (this.authGroups.includes(group)) {
         return;
       }
