@@ -74,7 +74,8 @@ export class AuthProvider {
     const session = await fetchAuthSession();
 
     const token = session.tokens.idToken.toString();
-    const groups = decodeJWT(token)['cognito:groups'];  
+    const decodedToken = decodeJWT(token);
+    const groups = decodedToken['cognito:groups'];  
 
     return groups ? Promise.resolve(groups) : Promise.reject();
   };
