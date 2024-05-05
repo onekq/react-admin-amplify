@@ -79,6 +79,6 @@ export class AuthProvider {
     const decodedToken = decodeJWT(token);
     const groups = decodedToken['cognito:groups'];  
 
-    return groups ? Promise.resolve(groups) : Promise.reject();
+    return groups ? Promise.resolve(Array.of(groups)) : Promise.reject();
   };
 }
